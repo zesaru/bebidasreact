@@ -1,12 +1,15 @@
 import React, { useContext, useState } from "react";
 import { CategoriasContext } from "../context/CategoriasContext";
+import { RecetasContext } from "../context/RecetasContext";
 
 const Formulario = () => {
   const [busqueda, guardarBusqueda] = useState({
     nombre: "",
     categoria: ""
   });
+
   const { categorias } = useContext(CategoriasContext);
+  const { buscarRecetas } = useContext(RecetasContext);
 
   // función para leer los contenidos
   const obtenerDatosReceta = e => {
@@ -15,11 +18,16 @@ const Formulario = () => {
       [e.target.name]: e.target.value
     });
   };
-
   return (
-    <form className="col-12">
-      <fieldset>
-        <legend>Busca bebidas por categoria o ingrediente</legend>
+    <form
+      className="col-12"
+      onSubmit={e => {
+        e.preventDefault();
+        buscarRecetas(busqueda);
+      }}
+    >
+      <fieldset className="text-center">
+        <legend>Busca bebidas por Categoría o Ingrediente</legend>
       </fieldset>
       <div className="row mt-4">
         <div className="col-md-4">
@@ -33,19 +41,18 @@ const Formulario = () => {
         </div>
         <div className="col-md-4">
           <select
-            onChange={obtenerDatosReceta}
             className="form-control"
             name="categoria"
+            onChange={obtenerDatosReceta}
           >
             <option value="">-- Selecciona Categoría --</option>
             {categorias.map(categoria => (
-              <option value={categoria.strCategory} key={categoria.strCategory}>
+              <option key={categoria.strCategory} value={categoria.strCategory}>
                 {categoria.strCategory}
               </option>
             ))}
           </select>
         </div>
-
         <div className="col-md-4">
           <input
             type="submit"
