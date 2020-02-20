@@ -20,13 +20,12 @@ const RecetasProvider = props => {
 
         const resultado = await axios.get(url);
 
-        console.log(resultado.data.drinks);
         guardarRecetas(resultado.data.drinks);
       };
 
       obtenerRecetas();
     }
-  }, [busqueda]);
+  }, [busqueda, categoria, consultar, nombre]);
   return (
     <RecetasContext.Provider
       value={{
